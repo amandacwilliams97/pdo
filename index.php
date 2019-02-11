@@ -11,16 +11,11 @@
  * 328/pdo/index.php
  */
 
-#Initial variables
-$dbName="awilliam_grc";
-$username="awilliam_grcuser";
-$password="Mandygirl97";
-
 #Connect to Database
+require '/home/awilliam/config.php';
 try {
     #Instantiate a database object
-    $dbh = new PDO("mysql:dbname=$dbName",
-        "$username", "$password");
+    $dbh = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
     echo 'Connected to database!';
 }
 catch (PDOException $e) {
