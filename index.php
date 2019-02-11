@@ -21,3 +21,21 @@ try {
 catch (PDOException $e) {
     echo $e->getMessage();
 }
+
+#Define the query
+$sql ="INSERT INTO pets(type, name, color)
+	VALUES (:type, :name, :color)";
+
+#Prepare the statement
+$statement = $dbh->prepare($sql);
+
+#Bind the Parameters
+$type = 'kangaroo';
+$name = 'Joey';
+$color = 'purple';
+$statement->bindParam(':type', $type, PDO::PARAM_STR);
+$statement->bindParam(':name', $name, PDO::PARAM_STR);
+$statement->bindParam(':color', $color, PDO::PARAM_STR);
+
+#Execute
+$statement->execute();
