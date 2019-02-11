@@ -132,7 +132,7 @@ $sql="SELECT * FROM pets WHERE id = :id";
 
 #Prepare the statement
 $statement=$dbh->prepare($sql);
-
+/*
 #Bind the parameters
 $id=3;
 $statement->bindParam(':id', $id, PDO::PARAM_INT);
@@ -143,3 +143,100 @@ $statement->execute();
 #Process the result
 $row = $statement->fetch(PDO::FETCH_ASSOC);
 echo $row['name'].", ".$row['type'].", ".$row['color'];
+*/
+
+#Define the query
+$sql="SELECT * FROM pets";
+
+#Prepare the statement
+$statement=$dbh->prepare($sql);
+
+/*
+#Execute
+$statement->execute();
+
+#Process the result
+$result = $statement->fetchAll(PDO::FETCH_ASSOC);
+foreach ($result as $row) {
+    echo $row['name'].", ".$row['type'].", ".$row['color'];
+}
+*/
+
+/*
+#Define the query
+$sql="SELECT * FROM petOwners";
+
+#Prepare the statement
+$statement=$dbh->prepare($sql);
+
+#Execute
+$statement->execute();
+
+#Process the result
+$result = $statement->fetchAll(PDO::FETCH_ASSOC);
+foreach ($result as $row) {
+    $id = $row['id'];
+    $first = $row['first'];
+    $last = $row['last'];
+    $petId = $row['petId'];
+    $output.="
+    <tr>
+        <td>$id</td>
+        <td>$first</td>
+        <td>$last</td>
+        <td>$petId</td>
+    </tr>";
+}
+
+echo "
+<table> 
+    <tr>
+        <th>id</th>
+        <th>first</th>
+        <th>last</th>
+        <th>petId</th>
+    </tr>
+    $output
+</table>";
+*/
+
+#Define the query
+$sql="SELECT pets.id, pets.name, pets.type, pets.color, petOwners.first, petOwners.last 
+FROM pets 
+INNER JOIN petOwners ON pets.id=petOwners.petId";
+
+#Prepare the statement
+$statement=$dbh->prepare($sql);
+
+#Execute
+$statement->execute();
+
+#Process the result
+$result = $statement->fetchAll(PDO::FETCH_ASSOC);
+foreach ($result as $row) {
+    $petId = $row['id'];
+    $name = $row['name'];
+    $type = $row['type'];
+    $color =$row['color'];
+    $owner = $row['first']." ".$row['last'];
+    $output.="
+    <tr>
+        <td>$petId</td>
+        <td>$name</td>
+        <td>$type</td>
+        <td>$color</td>
+        <td>$owner</td>
+    </tr>";
+}
+
+echo "
+<table> 
+    <tr>
+        <th>petId</th>
+        <th>name</th>
+        <th>type</th>
+        <th>color</th>
+        <th>owner</th>
+    </tr>
+    $output
+</table>";
